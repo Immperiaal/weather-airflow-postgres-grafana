@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: your_user
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  webserver:
+    image: apache/airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://your_user:your_password@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: your_fernet_key
+      AIRFLOW__WEBSERVER__SECRET_KEY: your_secret_key
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: webserver
+
+  scheduler:
+    image: apache/airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://your_user:your_password@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: your_fernet_key
+    depends_on:
+      - postgres
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: scheduler
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=your_password
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  postgres_data:
+  grafana_data:
