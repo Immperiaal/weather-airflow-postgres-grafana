@@ -11,7 +11,6 @@ import os
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
-
 load_dotenv('/opt/airflow/dags/Weather_Credentials.env')
 
 # Configuración de la DAG
@@ -26,7 +25,7 @@ dag = DAG(
     'etl_weather_alerts',
     default_args=default_args,
     description='ETL Weather Alerts API',
-    schedule_interval='30 10 * * *',
+    schedule_interval='30 12 * * *',
     catchup=False
 )
 
