@@ -25,7 +25,7 @@ dag = DAG(
     'etl_weather_alerts',
     default_args=default_args,
     description='ETL Weather Alerts API',
-    schedule_interval='30 12 * * *',
+    schedule_interval='30 8 * * *',
     catchup=False
 )
 
