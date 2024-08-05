@@ -17,7 +17,7 @@ load_dotenv('/opt/airflow/dags/Weather_Credentials.env')
 default_args = {
     'owner': 'immperiaal',
     'depends_on_past': False,
-    'start_date': datetime(2024, 8, 4),
+    'start_date': datetime(2024, 8, 1),
     'retries': 3,
     'retry_delay': timedelta(minutes=20)
 }
