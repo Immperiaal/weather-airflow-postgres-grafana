@@ -17,7 +17,7 @@ load_dotenv('/opt/airflow/dags/Weather_Credentials.env')
 default_args = {
     'owner': 'immperiaal',
     'depends_on_past': False,
-    'start_date': days_ago(0),
+    'start_date': datetime(2024, 8, 4),
     'retries': 3,
     'retry_delay': timedelta(minutes=20)
 }
@@ -25,7 +25,7 @@ dag = DAG(
     'etl_weather_alerts',
     default_args=default_args,
     description='ETL Weather Alerts API',
-    schedule_interval='30 14 * * *',
+    schedule_interval='30 10 * * *',
     catchup=False
 )
 
