@@ -83,7 +83,12 @@ def transform(**kwargs):
             alert_data = {key: entry.get(key, [None]) for key in [
                 'regions', 'title', 'description', 'ends_utc', 'onset_utc', 'expires_utc', 'effective_utc'
             ]}
-
+            
+            alert_data['ends_utc'] = datetime.strptime(alert_data['ends_utc'], "%Y-%m-%dT%H:%M:%S")
+            alert_data['onset_utc'] = datetime.strptime(alert_data['onset_utc'], "%Y-%m-%dT%H:%M:%S")
+            alert_data['expires_utc'] = datetime.strptime(alert_data['expires_utc'], "%Y-%m-%dT%H:%M:%S")
+            alert_data['effective_utc'] = datetime.strptime(alert_data['effective_utc'], "%Y-%m-%dT%H:%M:%S")
+            
             # Unir todos los campos en un solo diccionario
             select_data = {**general_info, **alert_data}
 
