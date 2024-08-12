@@ -79,10 +79,10 @@ def transform(**kwargs):
 
             # Seleccionar los campos necesarios
             select_data = {key: entry.get(key, [None]) for key in [
-                'country_code', 'state_code', 'city_name', 'lat', 'lon', 'station',
-                'datetime', 'timezone', 'app_temp', 'temp', 'aqi', 'clouds', 'dewpt',
-                'dhi', 'dni', 'elev_angle', 'ghi', 'gust', 'h_angle', 'precip', 'pres',
-                'slp', 'snow', 'solar_rad', 'sunrise', 'sunset', 'wind_cdir', 'wind_dir', 'wind_spd'
+                'country_code', 'state_code', 'city_name', 'lat', 'lon', 'station', 'datetime',
+                'timezone', 'temp', 'app_temp', 'dewpt', 'rh', 'clouds', 'precip',
+                'snow', 'aqi', 'wind_spd', 'gust', 'wind_cdir', 'wind_dir', 'solar_rad', 'dhi', 'dni','ghi', 'elev_angle',
+                'h_angle', 'pres','slp', 'sunrise', 'sunset',
             ]}
             select_data['datetime'] = datetime.strptime(select_data['datetime'], "%Y-%m-%d:%H")
 
