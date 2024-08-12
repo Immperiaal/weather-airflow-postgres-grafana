@@ -1,10 +1,10 @@
 # Data Weather
 
-count: Count of returned observations.
+- count: Count of returned observations.
 
-data: [
+- data: [
 
-lat: Latitude (Degrees).
+  lat: Latitude (Degrees).
 
 lon: Longitude (Degrees).
 
@@ -92,19 +92,19 @@ h_angle: [DEPRECATED] Solar hour angle (degrees).
 
 # Data Weather Alerts
 
-lat: Latitude (Degrees).
+- lat: Latitude (Degrees).
 
-lon: Longitude (Degrees).
+- lon: Longitude (Degrees).
 
-timezone: Local IANA Timezone.
+- timezone: Local IANA Timezone.
 
-city_name: Nearest city name.
+- city_name: Nearest city name.
 
-state_code: State abbreviation/code.
+- state_code: State abbreviation/code.
 
-country_code: Country abbreviation.
+- country_code: Country abbreviation.
 
-alerts: [
+- alerts: [
 
 title: Brief description of the alert.
 
