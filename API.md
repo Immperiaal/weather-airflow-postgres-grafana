@@ -4,7 +4,7 @@
 
 - data: [
 
-  -- lat: Latitude (Degrees).
+  ◦ lat: Latitude (Degrees).
 
 lon: Longitude (Degrees).
 
