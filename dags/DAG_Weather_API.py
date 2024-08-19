@@ -84,6 +84,7 @@ def transform(**kwargs):
                 'wind_spd', 'gust', 'wind_cdir', 'wind_dir', 'solar_rad', 'dhi', 'dni','ghi', 'uv',
                 'elev_angle', 'h_angle', 'pres','slp', 'vis', 'sunrise', 'sunset',
             ]}
+
             select_data['datetime'] = datetime.strptime(select_data['datetime'], "%Y-%m-%d:%H")
 
             kwargs['ti'].xcom_push(key='transform_weather', value=select_data)
@@ -128,29 +129,6 @@ def load(**kwargs):
         send_email(subject, body)
         raise
 
-# Función para enviar correo electrónico
-def send_email_data(**kwargs):
-    try:
-        # Verificar si los datos fueron cargados
-        data_loaded = kwargs['ti'].xcom_pull(key='load_weather', task_ids='load_postgres')
-
-        if data_loaded:
-            # Crear el correo electrónico
-            subject = "Postgre DB"
-            body = ("Weather data loaded successfully into Weather table!!")
-
-            send_email(subject, body)
-
-            return "Email sent successfully!"
-        return "No data to send"
-    
-    except Exception as e:
-        # Crear el correo electrónico
-        subject = "ERROR on DAG_Weather_Alerts_API send_email_data"
-        body = (f"ERROR {e}")
-        send_email(subject, body)
-        raise
-
 
 # Definición de las tareas
 extract_weather_data = PythonOperator(
@@ -174,12 +152,6 @@ load_postgres = PythonOperator(
     dag=dag
 )
 
-email_data_loaded = PythonOperator(
-    task_id='email_weather_alert',
-    python_callable=send_email_data,
-    provide_context=True,
-    dag=dag
-)
 
 # Definición del flujo de tareas
-extract_weather_data >> transform_weather_data >> load_postgres >> email_data_loaded
+extract_weather_data >> transform_weather_data >> load_postgres
