@@ -12,16 +12,32 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  airflow-init:
+    image: apache/airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://your_user:your_password@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: n_bW6FyjDB8WefdG9FQEzyrtyWVAG5HbvX_59RTxU_A=
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    depends_on:
+      - postgres
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: ["airflow", "db", "init"]
+
   webserver:
     image: apache/airflow
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://your_user:your_password@postgres/airflow
-      AIRFLOW__CORE__FERNET_KEY: your_fernet_key
-      AIRFLOW__WEBSERVER__SECRET_KEY: your_secret_key
+      AIRFLOW__CORE__FERNET_KEY: n_bW6FyjDB8WefdG9FQEzyrtyWVAG5HbvX_59RTxU_A=
+      AIRFLOW__WEBSERVER__SECRET_KEY: 7e6a0a779befc1a3b3c4a37579c6b197
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     depends_on:
       - postgres
+      - airflow-init
     ports:
       - "8080:8080"
     volumes:
@@ -35,9 +51,10 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://your_user:your_password@postgres/airflow
-      AIRFLOW__CORE__FERNET_KEY: your_fernet_key
+      AIRFLOW__CORE__FERNET_KEY: n_bW6FyjDB8WefdG9FQEzyrtyWVAG5HbvX_59RTxU_A=
     depends_on:
       - postgres
+      - airflow-init
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
@@ -55,6 +72,17 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: your_email
+      PGADMIN_DEFAULT_PASSWORD: your_password
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
 volumes:
   postgres_data:
   grafana_data:
+  pgadmin_data:
